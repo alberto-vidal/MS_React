@@ -2,7 +2,42 @@ import React from 'react'
 import { View, Text, StyleSheet, Button, TouchableOpacity, Image, TextInput } from 'react-native'
 import Header from './components/Header'
 
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword} from 'firebase/auth';
+import { async } from '@firebase/util';
+import { auth } from '../src/firebaseConnection';
+import { Database, getDatabase, ref, set, update, getFirestore } from "firebase/database";
+
+
 const Cadastro_Tela_00 = ({navigation}) => {
+    const [email, setEmail] = React.useState('');
+    const [password, setPassword] = React.useState('');
+
+    const [cnpj, setCnpj] = React.useState('');
+    const [razao_social, setRazao_social] = React.useState('');
+    const [telefone, setTelefone] = React.useState('');
+    const [endereco, setEndereco] = React.useState('');
+    
+    const dados_restaurantes = {
+        CNPJ: cnpj,
+        Razao_Social: razao_social,
+        Email: email,
+        Telefone: telefone,
+        Endereço: endereco,
+        Senha: password
+      };
+
+    async function createUser() {
+        
+        await createUserWithEmailAndPassword(auth, email, password)
+                
+        set(ref(getDatabase(), email.replace('.','')), dados_restaurantes)
+          
+        .then(value => {
+            navigation.navigate('Cadastro_Tela_01');
+        })
+        .catch(error => console.log(error));
+    } 
+
     return (
         <>
             <Header title="Marmita Solidária"></Header>
@@ -16,6 +51,8 @@ const Cadastro_Tela_00 = ({navigation}) => {
                         <Text style={styles.title_box}>CNPJ: </Text>
                         <TextInput
                         placeholder=""
+                        value={cnpj}
+                        onChangeText={value => setCnpj(value)}
                         style={styles.info_request}
                         />                        
                     </View>
@@ -23,6 +60,8 @@ const Cadastro_Tela_00 = ({navigation}) => {
                         <Text style={styles.title_box}>Razão Social: </Text>
                         <TextInput
                         placeholder=""
+                        value={razao_social}
+                        onChangeText={value => setRazao_social(value)}
                         style={styles.info_request}
                         />
                     </View>
@@ -30,6 +69,8 @@ const Cadastro_Tela_00 = ({navigation}) => {
                         <Text style={styles.title_box}>Email: </Text>
                         <TextInput
                         placeholder=""
+                        value={email}
+                        onChangeText={value => setEmail(value)}
                         style={styles.info_request}
                         />                        
                     </View>
@@ -37,6 +78,8 @@ const Cadastro_Tela_00 = ({navigation}) => {
                         <Text style={styles.title_box}>Telefone: </Text>
                         <TextInput
                         placeholder=""
+                        value={telefone}
+                        onChangeText={value => setTelefone(value)}
                         style={styles.info_request}
                         />
                     </View>
@@ -44,6 +87,8 @@ const Cadastro_Tela_00 = ({navigation}) => {
                         <Text style={styles.title_box}>Endereço: </Text>
                         <TextInput
                         placeholder=""
+                        value={endereco}
+                        onChangeText={value => setEndereco(value)}
                         style={styles.info_request}
                         />                        
                     </View>
@@ -51,16 +96,18 @@ const Cadastro_Tela_00 = ({navigation}) => {
                         <Text style={styles.title_box}>Senha: </Text>
                         <TextInput
                         placeholder=""
+                        value={password}
+                        onChangeText={value => setPassword(value)}
                         style={styles.info_request}
                         />
                     </View>
                     
                     <View style={styles.grupo_Botoes}>
-                        <TouchableOpacity style={styles.botao_Cadastrar} onPress={() => navigation.navigate('Cadastro_Tela_01')}>
+                        <TouchableOpacity style={styles.botao_Cadastrar} onPress={() => createUser()}>
                             <Text style={{color: "white"}}>Cadastrar</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.botao_Voltar} onPress={() => navigation.navigate('Login_Erro_Tela_00')}>
+                        <TouchableOpacity style={styles.botao_Voltar} onPress={() => navigation.navigate('Login_Tela_00')}>
                             <Text style={{color: "white"}}>Voltar</Text>
                         </TouchableOpacity>
                     </View>

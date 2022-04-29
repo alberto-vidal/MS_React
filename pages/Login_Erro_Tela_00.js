@@ -13,7 +13,7 @@ const Login_Erro_Tela_00 = ({navigation}) => {
                         Login
                     </Text>
                     <View style={styles.mensagem}>
-                        <Text style={{color: "white"}}> Usuario não cadastrado.</Text>
+                        <Text style={{color: "white"}}> Usuario não cadastrado ou senha incorreta</Text>
                     </View>
                     <View style={styles.grupo_Botoes}>
                         <TouchableOpacity style={styles.botao_Voltar} onPress={() => navigation.navigate('Login_Tela_00')}>
@@ -76,6 +76,7 @@ const styles = StyleSheet.create({
     mensagem:{
         width: 200,
         alignItems: "center",
+        textAlign: 'center'
         
     },
   

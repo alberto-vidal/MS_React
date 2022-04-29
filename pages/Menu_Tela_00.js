@@ -1,8 +1,10 @@
+import react from 'react'
 import React from 'react'
 import { View, Text, StyleSheet, Button, TouchableOpacity, Image, TextInput } from 'react-native'
 import Header from './components/Header'
 
 const Menu_Tela_00 = ({navigation}) => {
+
     return (
         <>
             <Header title="Marmita Solidária"></Header>
@@ -23,8 +25,6 @@ const Menu_Tela_00 = ({navigation}) => {
                 </View>
                 
             </View>
-            
-        
         </>
     );
 }

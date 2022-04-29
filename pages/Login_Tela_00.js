@@ -1,8 +1,24 @@
 import React from 'react'
 import { View, Text, StyleSheet, Button, TouchableOpacity, Image, TextInput } from 'react-native'
+
 import Header from './components/Header'
 
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword} from 'firebase/auth';
+import { async } from '@firebase/util';
+import { auth } from '../src/firebaseConnection';
+
 const Login_Tela_00 = ({navigation}) => {
+    const [email, setEmail] = React.useState('');
+    const [password, setPassword] = React.useState('');
+
+    async function login() {
+        await signInWithEmailAndPassword(auth, email, password)
+        .then(value => {
+            navigation.navigate('Menu_Tela_00')
+
+        })
+        .catch(error => navigation.navigate('Login_Erro_Tela_00'));
+    }
     return (
         <>
             <Header title="Marmita Solidária"></Header>
@@ -16,6 +32,8 @@ const Login_Tela_00 = ({navigation}) => {
                         <Text style={styles.title_box}>Usuario:</Text>
                         <TextInput
                         placeholder=""
+                        value={email}
+                        onChangeText={value => setEmail(value)}
                         style={styles.info_request}
                         />                        
                     </View>
@@ -23,6 +41,9 @@ const Login_Tela_00 = ({navigation}) => {
                         <Text style={styles.title_box}>Senha:</Text>
                         <TextInput
                         placeholder=""
+                        value={password}
+                        onChangeText={value => setPassword(value)}
+                        secureTextEntry={true}
                         style={styles.info_request}
                         />
                     </View>
@@ -33,7 +54,7 @@ const Login_Tela_00 = ({navigation}) => {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.grupo_Botoes}>
-                        <TouchableOpacity style={styles.botao_Entrar} onPress={() => navigation.navigate('Menu_Tela_00')}>
+                        <TouchableOpacity style={styles.botao_Entrar} onPress={() => login()}>
                             <Text style={{color: "white"}}>Entrar</Text>
                         </TouchableOpacity>
 
